@@ -13,7 +13,7 @@ import { cancelOrder } from './app/useCases/orders/cancelOrder';
 
 export const router = Router();
 
-// Configuração do multer para upload de arquivos
+//Configuração do multer para fazer upload de arquivos
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, callback) {
@@ -25,29 +25,29 @@ const upload = multer({
   }),
 });
 
-// Listar categorias
+//Lista as categorias
 router.get('/categories', listCategories);
 
-// Criar categoria
+//Cria as categoria
 router.post('/categories', createCategory);
 
-// Listar produtos
+//Lista os produtos
 router.get('/products', listProducts);
 
-// Criar produtos (incluindo upload de imagem)
+//Cria os produtos (upload de imagem)
 router.post('/products', upload.single('image'), createProduct);
 
-// Obter produtos por categoria
+//Obtem os produtos por categoria
 router.get('/categories/:categoryId/products', listProductsByCategory);
 
-// Listar pedidos
+//Lista os pedidos
 router.get('/orders', listOrders);
 
-// Criar pedidos
+//Cria os pedidos
 router.post('/orders', createOrder);
 
-// Alterar o status do pedido (usando PATCH, pois é uma alteração parcial)
+//Altera o status do pedido (usando PATCH, pois é uma alteração parcial)
 router.patch('/orders/:orderId', changeOrderStatus);
 
-// Excluir/cancelar pedido
+//Exclui/cancela o pedido
 router.delete('/orders/:orderId', cancelOrder);
