@@ -10,44 +10,44 @@ import { listOrders } from './app/useCases/orders/listOrders';
 import { createOrder } from './app/useCases/orders/createOrder';
 import { changeOrderStatus } from './app/useCases/orders/changeOrderStatus';
 import { cancelOrder } from './app/useCases/orders/cancelOrder';
+
 export const router = Router();
 
-//configuração do multer
+// Configuração do multer para upload de arquivos
 const upload = multer({
-	storage: multer.diskStorage({
-		destination(req, file, callback){
-			callback(null, path.resolve(__dirname, '..', 'uploads'));
-		},
-		filename(req, file, callback){
-			callback(null, `${Date.now()}-${file.originalname}`);
-		},
-	})
-
+  storage: multer.diskStorage({
+    destination(req, file, callback) {
+      callback(null, path.resolve(__dirname, '..', 'uploads'));
+    },
+    filename(req, file, callback) {
+      callback(null, `${Date.now()}-${file.originalname}`);
+    },
+  }),
 });
 
-//List categories
+// Listar categorias
 router.get('/categories', listCategories);
 
-//Create category
+// Criar categoria
 router.post('/categories', createCategory);
 
-//List products
+// Listar produtos
 router.get('/products', listProducts);
 
-//Create products
+// Criar produtos (incluindo upload de imagem)
 router.post('/products', upload.single('image'), createProduct);
 
-//Get products by category
+// Obter produtos por categoria
 router.get('/categories/:categoryId/products', listProductsByCategory);
 
-//List orders
+// Listar pedidos
 router.get('/orders', listOrders);
 
-//Create orders
+// Criar pedidos
 router.post('/orders', createOrder);
 
-//Change orders status/ patch e nao put por ser uma alteração parcial
+// Alterar o status do pedido (usando PATCH, pois é uma alteração parcial)
 router.patch('/orders/:orderId', changeOrderStatus);
 
-//Delete/cancel order
+// Excluir/cancelar pedido
 router.delete('/orders/:orderId', cancelOrder);
